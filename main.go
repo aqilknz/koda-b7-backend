@@ -36,6 +36,15 @@ func main() {
 			})
 			return
 		}
+		if len(register.Password) < 8 {
+			ctx.JSON(http.StatusBadRequest, Response{
+				Message: "Password minimal harus 8 karakter",
+				Data:    nil,
+				Status:  false,
+				Error:   "Bad Request",
+			})
+			return
+		}
 		if !formatEmail(register.Email) {
 			ctx.JSON(http.StatusBadRequest, Response{
 				Message: "Format Email salah",
@@ -94,15 +103,14 @@ func main() {
 			}
 		}
 		if !isCheck {
-			if login.Email == "" || login.Password == "" {
-				ctx.JSON(http.StatusUnauthorized, Response{
-					Message: "Email atau Password salah",
-					Data:    nil,
-					Status:  false,
-					Error:   "Unauthorized",
-				})
-				return
-			}
+			ctx.JSON(http.StatusUnauthorized, Response{
+				Message: "Email atau Password salah",
+				Data:    nil,
+				Status:  false,
+				Error:   "Unauthorized",
+			})
+			return
+
 		}
 		ctx.JSON(http.StatusOK, Response{
 			Message: "Login Successfully",
